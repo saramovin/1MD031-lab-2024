@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html lang="en">
+   <head>
+    <link rel="stylesheet" type="text/css" href="public/css/style.css">
+       <title>Burger heaven</title>
+       <meta charset="utf-8"/>
+   </head>
+   <body>
+        <header class="header">
+            <img src="public/img/Ny-bakgrund.jpeg">
+            <h1>Saras Burgers</h1>
+            
+        </header>
+        <main>
+            <section>
+                <h2>Välj din burgare</h2>
+                <p>Här kan du välja bland våra hamburgare</p>
+                <div class="burger-grid">
+                    <div class="burger">
+                        <h3>Klassikern</h3>
+                        <img src="public/img/Klassikern.jpeg">
+                        <ul>
+                            <li>Klassisk cheeseburgare</li>
+                            <li class="Allergi">Svensk ost (laktos)</li>
+                            <li class="Allergi">Fluffigt bröd (gluten)</li>
+                        </ul>
+                    </div>
+                    <div class="burger">
+                        <h3>Krispet</h3>
+                        <img src="public/img/Kyckling-burgare.jpeg">
+                        <ul>
+                            <li>Krispig kycklingburgare</li>
+                            <li>Färska grönsaker</li>
+                            <li class="Allergi">Fluffigt bröd (gluten)</li>
+                        </ul>
+                    </div>
+                    <div class="burger">
+                        <h3>Grönt är skönt</h3>
+                        <img src="public/img/Vegan-nr2.jpeg">
+                        <ul>
+                            <li>Vegansk</li>
+                            <li>Näringsrik</li>
+                            <li>Glutenfri</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            <section class="Kontaktformulär" id="Kontaktinformation">
+                <h2>Kontaktinformation</h2>
+                <p>Fyll in kontaktuppgifter</p>
+                <form>
+                    <p>
+                        <label for="fullname">Full name</label><br>
+                        <input type="text" id="fullname" name="fn" required="required" placeholder="First- and lastname">
+                    </p>
+                    <p>
+                        <label for="email">E-mail</label><br>
+                        <input type="email" id="email" name="em" required="required" placeholder="E-mail address">
+                    </p>
+                    <p>
+                        <label for="streetname">Street</label><br>
+                        <input type="text" id="streetname" name="sn" required="required" placeholder="Streetname">
+                    </p>
+                    <p>
+                        <label for="housenumber">House number</label><br>
+                        <input type="number" id="housenumber" name="hn" required="required" placeholder="House number">
+                    </p>
+                    <p>
+                        <label for="betalsätt">Betalsätt</label><br>
+                        <select id="betalsätt" name="bs">
+                            <option>Kort</option>
+                            <option>Betala på plats</option>
+                            <option>Presentkort</option>
+                            <option>Faktura</option>
+                            <option>Pappa betalar</option>
+                        </select>
+                     </p>
+                     <p>
+                        <label for="kön">Kön</label><br>
+                        <input type="radio" id="Man" name="kön" value="Man" required>
+                        <label for="Man">Man</label><br>
+                        
+                        <input type="radio" id="Kvinna" name="kön" value="Kvinna" required>
+                        <label for="Kvinna">Kvinna</label><br>
+
+                        <input type="radio" id="Ickebinär" name="kön" value="Ickebinär" required>
+                        <label for="Ickebinär">Ickebinär</label><br>
+                        
+                        <input type="radio" id="Vill-inte-ange" name="kön" value="Vill inte ange" required checked="checked">
+                        <label for="Vill-inte-säga">Vill inte ange</label>
+                    </p>
+                </form>
+                <button type="submit">
+                    <img class="buttonimg" src="public/img/Delivery.jpeg">
+                    Send Order
+                  </button>
+            </section>
+        </main>
+        <footer>
+            @Burger2024
+        </footer>
+   </body>
+</html>
