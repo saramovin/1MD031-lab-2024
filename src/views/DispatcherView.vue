@@ -2,7 +2,20 @@
     <div id="orders">
       <div id="orderList">
         <div v-for="(order, key) in orders" v-bind:key="'order'+key">
-          #{{ key }}: {{ order.orderItems.join(", ") }}
+          <p><strong>Order #{{ key }}</strong></p>
+          <p>Burgers Ordered:</p>
+          <ul>
+            <li v-for="(amount, name) in order.orderItems" :key="name">
+              {{ name }}: {{ amount }} st
+            </li>
+          </ul>
+          <p>Kontaktinformation:</p>
+          <ul>
+            <li>Namn: {{ order.customerInfo.name }}</li>
+            <li>Email: {{ order.customerInfo.email }}</li>
+            <li>Betalsätt: {{ order.customerInfo.paymentMethod }}</li>
+            <li>Kön: {{ order.customerInfo.gender }}</li>
+          </ul>
         </div>
         <button v-on:click="clearQueue">Clear Queue</button>
       </div>
@@ -25,7 +38,7 @@
       }
     },
     created: function () {
-      socket.on('currentQueue', data =>
+      socket.on('currentQueue', data => 
         this.orders = data.orders);
     },
     methods: {

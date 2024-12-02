@@ -8,7 +8,7 @@
       <li v-if="burger.lactose" class="Allergi">Innehåller laktos</li>
       <li v-if="!burger.lactose && !burger.gluten">Gluten- och laktosfri</li>
     </ul>
-    <p>Amount ordered: {{ amountOrdered }}</p>
+    <p>Antal: <button @click="decreaseOrder">-</button> {{ amountOrdered }} <button @click="increaseOrder">+</button></p>
   </div>
 </template>
 
@@ -22,7 +22,25 @@ export default {
     return {
       amountOrdered: 0
     }
-  }
+  },
+  methods: {
+    increaseOrder () {
+      this.amountOrdered++;
+      this.emitOrder();
+    },
+    decreaseOrder () {
+      if (this.amountOrdered > 0) {
+        this.amountOrdered--;
+        this.emitOrder();
+      }
+    },
+    emitOrder() {
+      this.$emit("orderedBurger", {
+        name: this.burger.name,
+        amount: this.amountOrdered});
+    }
+  },
+
 }
 </script>
 

@@ -17,6 +17,7 @@
                     v-for="burger in burgers"
                     :key="burger.name"
                     :burger="burger"
+                    v-on:orderedBurger="addToOrder"
                     />
                 </div>
             </section>
@@ -24,44 +25,59 @@
                 <h2>Kontaktinformation</h2>
                 <p>Fyll in kontaktuppgifter</p>
                 <form>
-                    <p>Full name: {{ fullname }} </p>
-                    <input v-model="fullname" placeholder="First- and lastname" />                    
-                    <p>E-mail: {{ email }} </p>
+                    <h3>Namn: </h3>
+                    <input v-model="fullname" placeholder="För- och efternamn" />                    
+                    <h3>E-mail:</h3>
                     <input v-model="email" placeholder="E-mail adress" />
-                    <p>Street: {{ streetname }} </p>
-                    <input v-model="streetname" placeholder="Streetname" />
-                    <p>House number: {{ housenumber }} </p>
-                    <input v-model.number="housenumber" placeholder="House number" />
-                    <div>Betalsätt: {{ betalsätt }}</div>
+                    <h3>Betalsätt:</h3>
                     <select v-model="betalsätt">
-                        <option disabled value="">Please select one</option>
+                        <option disabled value="">Välj en</option>
                         <option>Kort</option>
                         <option>Faktura</option>
                         <option>Presentkort</option>
                     </select>
-                    <div>Kön: {{ kön }}</div>
+                    <h3>Kön:</h3>
+                    <div>
                     <input type="radio" id="man" value="Man" v-model="kön" />
                     <label for="man">Man</label>
-
+                    </div>
+                    <div>
                     <input type="radio" id="kvinna" value="Kvinna" v-model="kön" />
                     <label for="kvinna">Kvinna</label>
-
+                    </div>
+                    <div>
                     <input type="radio" id="ickebinär" value="Ickebinär" v-model="kön" />
                     <label for="ickebinär">Ickebinär</label>
-
+                    </div>
+                    <div>
                     <input type="radio" id="villInteAnge" value="Vill inte ange" v-model="kön" />
                     <label for="villInteAnge">Vill inte ange</label>
+                    </div>
                 </form>
-                <button type="submit" v-on:click="submitForm">
+            <h3>Vänligen ange leveransadress:</h3>
+            <div style="width: 500px; height: 400px; overflow: scroll; border: 1px solid">
+            <div id="map" v-on:click="setLocation">
+                <div 
+                v-bind:style="{left: location.x + 'px', top: location.y + 'px'}"
+                style="position: absolute; 
+                font-weight: bold;
+                background-color: black;
+                color: white;
+                border-radius: 50%;
+                width: 20px;
+                height: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;">
+            T
+            </div>
+        </div>
+    </div>
+    <button type="submit" v-on:click="submitForm">
                     <img class="buttonimg" src="/img/Delivery.jpeg">
-                    Send Order
+                    Skicka Beställning
                   </button>
             </section>
-
-            <div id="map" v-on:click="addOrder">
-    click here
-    </div>
-
         </main>
         <footer>
             @Burger2024
@@ -99,35 +115,46 @@ export default {
   data: function () {
     return {
       burgers: menu,
+      orderedBurgers:{},
       fullname: "",
       email: "",
-      streetname: "",
-      housenumber: null,
       betalsätt: "",
-      kön: ""
+      kön: "",
+      amountOrdered: 0,
+      location: {x: 0, y: 0}
     }
   },
   methods: {
     getOrderNumber: function () {
       return Math.floor(Math.random()*100000);
     },
-    addOrder: function (event) {
+    setLocation: function (event) {
       var offset = {x: event.currentTarget.getBoundingClientRect().left,
                     y: event.currentTarget.getBoundingClientRect().top};
-      socket.emit("addOrder", { orderId: this.getOrderNumber(),
-                                details: { x: event.clientX - 10 - offset.x,
-                                           y: event.clientY - 10 - offset.y },
-                                orderItems: ["Beans", "Curry"]
-                              }
-                 );
+        this.location = {
+            x: event.clientX - offset.x,
+            y: event.clientY - offset.y
+        };
+        console.log("Updated location:", this.location);
+    },
+    addToOrder(event){
+        this.orderedBurgers[event.name]=event.amount;
+        console.log(this.orderedBurgers);
     },
     submitForm: function () {
-        console.log("Full name:", this.fullname);
-        console.log("Email:", this.email);
-        console.log("Street:", this.streetname);
-        console.log("House number:", this.housenumber);
-        console.log("Betalsätt:", this.betalsätt);
-        console.log("Kön:", this.kön);
+        const orderData = {
+            orderId: this.getOrderNumber(),
+            details: this.location,
+            orderItems: this.orderedBurgers,
+            customerInfo: {
+                name: this.fullname,
+                email: this.email,
+                paymentMethod: this.betalsätt,
+                gender: this.kön,
+            }
+        };
+        socket.emit("addOrder", orderData);
+        console.log("Order sent:", orderData);
     }
   }
 }
@@ -135,9 +162,12 @@ export default {
 
 <style>
   #map {
-    width: 300px;
-    height: 300px;
-    background-color: red;
+    width: 1920px;
+    height: 1028px;
+    background: url("/img/polacks.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
   }
   /*@import url('https://fonts.googleapis.com/css2?family=Agbalumo&family=Cormorant:wght@700&display=swap');*/
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
